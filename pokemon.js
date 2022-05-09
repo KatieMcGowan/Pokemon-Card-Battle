@@ -195,53 +195,83 @@ const cards = [
     }
   ]
 
-  const dealtCards = [];
+const playedCards = [];
 
-  //Dealing cards: 
-  //  create player object and computer object that displays 1. score 2. current hand 3. cards previously played
-  //  function that utilizes math.random and pushes result into array (const playerHand, const computerHand). Find way to move
-  //  have a score object that has player and computer as keys, values of each start at 0 and count up with each win
-  
   const player = {
     score: 0,
     currentHand: [],
     previouslyPlayed: [],
-    // playCard () {
-      
-    // }
+    playCard (num) {
+      console.log("Player's turn");
+      let index = num - 1; 
+      let playedCard = this.currentHand[index];
+      playedCards.push(playedCard);
+    }
   }
   
   const computer = {
     score: 0,
     currentHand: [],
     previouslyPlayed: [],
-    // playCard () {
-  
-    // }
+    computerSelection: 0,
+    autoSelect() {
+      const min = Math.ceil(0);
+      const max = Math.floor(this.currentHand.length - 1);
+      this.computerSelection += Math.floor(Math.random() * (max - min + 1) + min);
+    },
+    playCard (num) {
+      console.log("Computer's turn");
+      let index = num; 
+      let playedCard = this.currentHand[index];
+      playedCards.push(playedCard);
+      this.computerSelection = 0;
+    }
   }
 
 const dealHand = () => {
   for (let i = 0; i < 3; i++) {  
     const min = Math.ceil(0);
-    const max = Math.floor(cards.length);
+    const max = Math.floor(cards.length - 1);
     let handIndex = Math.floor(Math.random() * (max - min + 1) + min);
     player.currentHand.push(cards[handIndex]);
     cards.splice(handIndex,1);
   }  
   for (let i = 0; i < 3; i++) {  
     const min = Math.ceil(0);
-    const max = Math.floor(cards.length);
+    const max = Math.floor(cards.length - 1);
     let handIndex = Math.floor(Math.random() * (max - min + 1) + min);
     computer.currentHand.push(cards[handIndex]);
     cards.splice(handIndex,1);
   }
 }
 
-dealHand();
-console.log(player.currentHand);
-console.log(computer.currentHand);
-console.log(cards);
+let roundCounter = 0
 
-// const dummyArray = ["apple","orange","banana","pineapple"];
-// dummyArray.splice(1,1);
-// console.log(dummyArray);
+const round = (num) => {
+  dealHand();
+  console.log("Player's hand:");
+  console.log(player.currentHand);
+  console.log("Computer's hand:");
+  console.log(computer.currentHand);
+  console.log("Cards remaining:");
+  console.log(cards);
+  player.playCard(num);
+  computer.autoSelect();
+  computer.playCard(computer.computerSelection);
+  console.log(playedCards);
+  if (playedCards[0].damage > playedCards[1].damage) {
+    player.score++
+    console.log("Player wins the round");
+  } else if (playedCards[0].damage < playedCards[1].damage) {
+    computer.score++
+    console.log("Computer wins the round");
+  } else {
+    console.log("Tie!")
+  }
+  roundCounter++ 
+}
+
+round(1);
+console.log("The player's score is " + player.score)
+console.log("The computer's score is " + computer.score)
+console.log("Round " + roundCounter + " complete!");
