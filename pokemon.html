@@ -12,16 +12,21 @@
 </head>
 <body>
   <h1>Pokemon Card Battle</h1>
+  <h2>Round: 0</h2>
   <div class="battleground">
     <div class="playerside">
-      <div id="playercard">?</div>
+      <div id="playercard">
+        <p id="p1"></p>
+      </div>
       <p id="player">Player</p>
-      <p id="playerscore">0</p>
+      <p id="playerscore">Score: 0</p>
     </div>
+    <div id="playerplayed"></div>
+    <div id="computerplayed"></div>
     <div class="computerside">
-      <div id="computercard">?</div>
+      <div id="computercard"></div>
       <p id="computer">Computer</p>
-      <p id="computerscore">0</p>
+      <p id="computerscore">Score: 0</p>
     </div>  
   </div>
   <button id="deal">Deal Hand</button>

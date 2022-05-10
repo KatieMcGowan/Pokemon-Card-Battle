@@ -1,6 +1,12 @@
 body {
   font-family: 'Press Start 2P', cursive;
 }
+h1 {
+  text-align: center;
+}
+h2 {
+  text-align: center;
+}
 .battleground {
   display: flex;
   flex-direction: row;
@@ -15,14 +21,41 @@ body {
   text-align: center;
 }
 #playercard {
+  padding: 5px;
+  font-size: 12px;
   background-color: blue;
-  height: 200px;
+  min-height: 200px;
   width: 150px;
   border: 5px;
   border-style: solid;
   border-color: navy;
 }
+#playerplayed {
+  height: 200px;
+  width: 150px;
+  border: 5px;
+  border-style: dashed;
+  border-color: navy;
+}
+#computerplayed {
+  height: 200px;
+  width: 150px;
+  border: 5px;
+  border-style: dashed;
+  border-color: navy;
+}
 #computercard {
+  padding: 5px;
+  font-size: 12px;
+  background-color: blue;
+  min-height: 200px;
+  width: 150px;
+  border: 5px;
+  border-style: solid;
+  border-color: navy;
+}
+#dealtHand {
+  font-size: 18px;
   background-color: blue;
   height: 200px;
   width: 150px;
