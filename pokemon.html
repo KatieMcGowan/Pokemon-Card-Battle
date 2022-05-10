@@ -5,9 +5,27 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pokemon Card Battle</title>
+  <link href="pokemon.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
   <h1>Pokemon Card Battle</h1>
+  <div class="battleground">
+    <div class="playerside">
+      <div id="playercard">?</div>
+      <p id="player">Player</p>
+      <p id="playerscore">0</p>
+    </div>
+    <div class="computerside">
+      <div id="computercard">?</div>
+      <p id="computer">Computer</p>
+      <p id="computerscore">0</p>
+    </div>  
+  </div>
+  <button id="deal">Deal Hand</button>
+
   <script src="pokemon.js"></script>
 </body>
 </html>

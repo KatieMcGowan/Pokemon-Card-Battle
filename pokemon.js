@@ -247,6 +247,8 @@ const dealHand = () => {
     computer.currentHand.push(cards[handIndex]);
     cards.splice(handIndex,1);
   }
+  console.log(player.currentHand);
+  console.log(computer.currentHand);
 }
 
 let roundCounter = 0
@@ -285,10 +287,16 @@ const round = (num) => {
   }
 };
 
-round(1);
-round(2);
-round(4);
-round(3);
-console.log("The player's score is " + player.score)
-console.log("The computer's score is " + computer.score)
-console.log("Round " + roundCounter + " complete!")
+const dealButton = document.getElementById("deal");
+
+dealButton.addEventListener("click", () => dealHand());
+
+// round(1);
+// round(2);
+// round(4);
+// round(3);
+// console.log("The player's score is " + player.score)
+// console.log("The computer's score is " + computer.score)
+// console.log("Round " + roundCounter + " complete!")
+
+//look up how to do carousels
