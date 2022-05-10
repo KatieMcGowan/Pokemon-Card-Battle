@@ -206,6 +206,8 @@ const playedCards = [];
       let index = num - 1; 
       let playedCard = this.currentHand[index];
       playedCards.push(playedCard);
+      this.previouslyPlayed.push(playedCard);
+      this.currentHand.splice(index,1)
     }
   }
   
@@ -225,6 +227,8 @@ const playedCards = [];
       let playedCard = this.currentHand[index];
       playedCards.push(playedCard);
       this.computerSelection = 0;
+      this.previouslyPlayed.push(playedCard);
+      this.currentHand.splice(index,1)
     }
   }
 
@@ -248,30 +252,43 @@ const dealHand = () => {
 let roundCounter = 0
 
 const round = (num) => {
-  dealHand();
-  console.log("Player's hand:");
-  console.log(player.currentHand);
-  console.log("Computer's hand:");
-  console.log(computer.currentHand);
-  console.log("Cards remaining:");
-  console.log(cards);
-  player.playCard(num);
-  computer.autoSelect();
-  computer.playCard(computer.computerSelection);
-  console.log(playedCards);
-  if (playedCards[0].damage > playedCards[1].damage) {
-    player.score++
-    console.log("Player wins the round");
-  } else if (playedCards[0].damage < playedCards[1].damage) {
-    computer.score++
-    console.log("Computer wins the round");
+  if (cards.length > 0) {
+    dealHand();
+    console.log("Player's hand:");
+    console.log(player.currentHand);
+    console.log("Computer's hand:");
+    console.log(computer.currentHand);
+    console.log("Cards remaining:");
+    console.log(cards);
+    player.playCard(num);
+    computer.autoSelect();
+    computer.playCard(computer.computerSelection);
+    console.log(playedCards);
+    if (playedCards[0].damage > playedCards[1].damage) {
+      player.score++
+      console.log("Player wins the round");
+    } else if (playedCards[0].damage < playedCards[1].damage) {
+      computer.score++
+      console.log("Computer wins the round");
+    } else {
+      console.log("Tie!")
+    }
+    roundCounter++;
+    playedCards.splice(0,2); 
   } else {
-    console.log("Tie!")
+    console.log("Game over!")
+      if (player.score > computer.score) {
+        console.log("Player wins!")
+      } else {
+        console.log("Computer wins!");
+      }
   }
-  roundCounter++ 
-}
+};
 
 round(1);
+round(2);
+round(4);
+round(3);
 console.log("The player's score is " + player.score)
 console.log("The computer's score is " + computer.score)
-console.log("Round " + roundCounter + " complete!");
+console.log("Round " + roundCounter + " complete!")
