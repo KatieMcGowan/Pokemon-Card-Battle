@@ -239,6 +239,12 @@ const dealHand = () => {
     let handIndex = Math.floor(Math.random() * (max - min + 1) + min);
     player.currentHand.push(cards[handIndex]);
     cards.splice(handIndex,1);
+
+    const playerpara = document.createElement('p');
+    const playernode = document.createTextNode(player.currentHand[i].name + ": " + player.currentHand[i].damage);
+    playerpara.appendChild(playernode);
+    const playerelement = document.getElementById('playercard');
+    playerelement.appendChild(playerpara);
   }  
   for (let i = 0; i < 3; i++) {  
     const min = Math.ceil(0);
@@ -246,37 +252,14 @@ const dealHand = () => {
     let handIndex = Math.floor(Math.random() * (max - min + 1) + min);
     computer.currentHand.push(cards[handIndex]);
     cards.splice(handIndex,1);
+    const computerpara = document.createElement('p');
+    const computernode = document.createTextNode(computer.currentHand[i].name + ": " + computer.currentHand[i].damage);
+    computerpara.appendChild(computernode);
+    const computerelement = document.getElementById('computercard');
+    computerelement.appendChild(computerpara);
   }
   console.log(player.currentHand);
   console.log(computer.currentHand);
-  //Updates player card with dealt hand
-  const playerpara1 = document.createElement('p');
-  const playernode1 = document.createTextNode(player.currentHand[0].name + ": " + player.currentHand[0].damage);
-  playerpara1.appendChild(playernode1);
-  const playerpara2 = document.createElement('p');
-  const playernode2 = document.createTextNode(player.currentHand[1].name + ": " + player.currentHand[1].damage);
-  playerpara2.appendChild(playernode2);
-  const playerpara3 = document.createElement('p');
-  const playernode3 = document.createTextNode(player.currentHand[2].name + ": " + player.currentHand[2].damage);
-  playerpara3.appendChild(playernode3);
-  const playerelement = document.getElementById('playercard');
-  playerelement.appendChild(playerpara1);
-  playerelement.appendChild(playerpara2);
-  playerelement.appendChild(playerpara3);
-  //Updates computer card with dealt hand
-  const computerpara1 = document.createElement('p');
-  const computernode1 = document.createTextNode(computer.currentHand[0].name + ": " + computer.currentHand[0].damage);
-  computerpara1.appendChild(computernode1);
-  const computerpara2 = document.createElement('p');
-  const computernode2 = document.createTextNode(computer.currentHand[1].name + ": " + computer.currentHand[1].damage);
-  computerpara2.appendChild(computernode2);
-  const computerpara3 = document.createElement('p');
-  const computernode3 = document.createTextNode(computer.currentHand[2].name + ": " + computer.currentHand[2].damage);
-  computerpara3.appendChild(computernode3);
-  const computerelement = document.getElementById('computercard');
-  computerelement.appendChild(computerpara1);
-  computerelement.appendChild(computerpara2);
-  computerelement.appendChild(computerpara3);
 }
 
 /* <div id="div1">
