@@ -197,38 +197,50 @@ const cards = [
 
 const playedCards = [];
 
-  const player = {
-    score: 0,
-    currentHand: [],
-    previouslyPlayed: [],
-    playCard (num) {
-      console.log("Player's turn");
-      let index = num - 1; 
-      let playedCard = this.currentHand[index];
-      playedCards.push(playedCard);
-      this.previouslyPlayed.push(playedCard);
-      this.currentHand.splice(index,1)
-    }
+const player = {
+  score: 0,
+  currentHand: [],
+  previouslyPlayed: [],
+  playCard (num) {
+    console.log("Player's turn");
+    let index = num - 1; 
+    let playedCard = this.currentHand[index];
+    playedCards.push(playedCard);
+    this.previouslyPlayed.push(playedCard);
+    this.currentHand.splice(index,1)
+    //Updates played card field
+    const playerplayedpara = document.createElement('p');
+    const playerplayednode = document.createTextNode(playedCard.name + ": " + playedCard.damage);
+    playerplayedpara.appendChild(playerplayednode);
+    const playerelement = document.getElementById('playerplayed');
+    playerelement.appendChild(playerplayedpara);
   }
+}
   
-  const computer = {
-    score: 0,
-    currentHand: [],
-    previouslyPlayed: [],
-    computerSelection: 0,
-    autoSelect() {
-      const min = Math.ceil(0);
-      const max = Math.floor(this.currentHand.length - 1);
-      this.computerSelection += Math.floor(Math.random() * (max - min + 1) + min);
-    },
-    playCard (num) {
-      console.log("Computer's turn");
-      let index = num; 
-      let playedCard = this.currentHand[index];
-      playedCards.push(playedCard);
-      this.computerSelection = 0;
-      this.previouslyPlayed.push(playedCard);
-      this.currentHand.splice(index,1)
+const computer = {
+  score: 0,
+  currentHand: [],
+  previouslyPlayed: [],
+  computerSelection: 0,
+  autoSelect() {
+    const min = Math.ceil(0);
+    const max = Math.floor(this.currentHand.length - 1);
+    this.computerSelection += Math.floor(Math.random() * (max - min + 1) + min);
+  },
+  playCard (num) {
+    console.log("Computer's turn");
+    let index = num; 
+    let playedCard = this.currentHand[index];
+    playedCards.push(playedCard);
+    this.computerSelection = 0;
+    this.previouslyPlayed.push(playedCard);
+    this.currentHand.splice(index,1)
+    //Updates played card field
+    const computerplayedpara = document.createElement('p');
+    const computerplayednode = document.createTextNode(playedCard.name + ": " + playedCard.damage);
+    computerplayedpara.appendChild(computerplayednode);
+    const computerelement = document.getElementById('computerplayed');
+    computerelement.appendChild(computerplayedpara);
     }
   }
 
@@ -239,9 +251,8 @@ const dealHand = () => {
     let handIndex = Math.floor(Math.random() * (max - min + 1) + min);
     player.currentHand.push(cards[handIndex]);
     cards.splice(handIndex,1);
-
     const playerpara = document.createElement('p');
-    const playernode = document.createTextNode(player.currentHand[i].name + ": " + player.currentHand[i].damage);
+    const playernode = document.createTextNode((i+1) + ": " + player.currentHand[i].name + ": " + player.currentHand[i].damage);
     playerpara.appendChild(playernode);
     const playerelement = document.getElementById('playercard');
     playerelement.appendChild(playerpara);
@@ -253,13 +264,14 @@ const dealHand = () => {
     computer.currentHand.push(cards[handIndex]);
     cards.splice(handIndex,1);
     const computerpara = document.createElement('p');
-    const computernode = document.createTextNode(computer.currentHand[i].name + ": " + computer.currentHand[i].damage);
+    const computernode = document.createTextNode((i+1) + ": " + computer.currentHand[i].name + ": " + computer.currentHand[i].damage);
     computerpara.appendChild(computernode);
     const computerelement = document.getElementById('computercard');
     computerelement.appendChild(computerpara);
   }
   console.log(player.currentHand);
   console.log(computer.currentHand);
+  roundCounter++;
 }
 
 /* <div id="div1">
@@ -276,11 +288,12 @@ const element = document.getElementById("div1");
 element.appendChild(para);
 </script> */
 
-let roundCounter = 0
+let selectedNumber = document.querySelector(".quantity");
+// console.log(selectedNumber);
+let roundCounter = 0;
 
 const round = (num) => {
   if (cards.length > 0) {
-    dealHand();
     console.log("Player's hand:");
     console.log(player.currentHand);
     console.log("Computer's hand:");
@@ -293,9 +306,11 @@ const round = (num) => {
     console.log(playedCards);
     if (playedCards[0].damage > playedCards[1].damage) {
       player.score++
+      document.getElementById("playerscore").innerHTML = "Score: " + player.score;
       console.log("Player wins the round");
     } else if (playedCards[0].damage < playedCards[1].damage) {
       computer.score++
+      document.getElementById("computerscore").innerHTML = "Score: " + computer.score;
       console.log("Computer wins the round");
     } else {
       console.log("Tie!")
@@ -313,8 +328,13 @@ const round = (num) => {
 };
 
 const dealButton = document.getElementById("deal");
-
 dealButton.addEventListener("click", () => dealHand());
+dealButton.addEventListener("click", function(){
+  document.getElementById("roundcounter").innerHTML = "Round: " + roundCounter;
+});
+
+// const playButton = document.getElementById("playhand");
+// playButton.addEventListener("click")
 
 // round(1);
 // round(2);
@@ -325,3 +345,8 @@ dealButton.addEventListener("click", () => dealHand());
 // console.log("Round " + roundCounter + " complete!")
 
 //look up how to do carousels
+
+const onSubmit = (quantity) => {
+  console.log('Submitted')
+  console.log(quantity);
+}

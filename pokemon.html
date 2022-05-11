@@ -12,7 +12,7 @@
 </head>
 <body>
   <h1>Pokemon Card Battle</h1>
-  <h2>Round: 0</h2>
+  <h2 id="roundcounter">Round: 0</h2>
   <div class="battleground">
     <div class="playerside">
       <div id="playercard">
@@ -30,7 +30,24 @@
     </div>  
   </div>
   <button id="deal">Deal Hand</button>
+  <br>
+
+<!-- <form onsubmit="round((document.getElementById('quantity'))">
+  <label for="quantity">Choose the number correlated with Pokemon name you want to play:</label>
+  <input type="number" name="quantity" id="quantity" min="1" max="3">
+  <span class="validity"></span>
+  <input type="submit" value="Submit">
+</form> -->
+  
+  
+  <label for="quantity">Choose the number correlated with Pokemon name you want to play:</label>
+  <input type="number" name="quantity" id="quantity" min="1" max="3">
+  <span class="validity"></span>
+  <button id='playhand' onclick="round(document.getElementById('quantity').value)">Submit</button>
+  <!-- <input type="submit" value="Submit"> -->
+
 
   <script src="pokemon.js"></script>
 </body>
 </html>
+
