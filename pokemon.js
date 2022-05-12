@@ -209,14 +209,19 @@ const player = {
     this.previouslyPlayed.push(playedCard);
     this.currentHand.splice(index,1)
     //Updates played card field
-    const playerplayedpara = document.createElement('p');
-    const playerplayednode = document.createTextNode(playedCard.name + ": " + playedCard.damage);
-    playerplayedpara.appendChild(playerplayednode);
-    const playerelement = document.getElementById('playerplayed');
-    playerelement.appendChild(playerplayedpara);
+    const playerPlayedPara = document.createElement('p');
+    const playerPlayedNode = document.createTextNode(playedCard.name + ": " + playedCard.damage);
+    playerPlayedPara.appendChild(playerPlayedNode);
+    const playerElement = document.getElementById('playerplayed');
+    playerElement.appendChild(playerPlayedPara);
+    //Removes played Pokemon from playercard
+    let playedEntry = document.getElementById("p" + index)
+    playedEntry.remove()
   }
 }
   
+//stored HTML element in p0, p2, p3. Call on index to remove element 
+
 const computer = {
   score: 0,
   currentHand: [],
@@ -241,8 +246,17 @@ const computer = {
     computerplayedpara.appendChild(computerplayednode);
     const computerelement = document.getElementById('computerplayed');
     computerelement.appendChild(computerplayedpara);
+    //Removes played Pokemon from playercard
+    let playedEntry = document.getElementById("c" + index)
+    playedEntry.remove()
     }
   }
+
+
+//Creating p tag for playercard
+//Creating a text node 
+//Apphending p tag with text node
+//Apphending playercard with apphended p tag
 
 const dealHand = () => {
   for (let i = 0; i < 3; i++) {  
@@ -251,24 +265,41 @@ const dealHand = () => {
     let handIndex = Math.floor(Math.random() * (max - min + 1) + min);
     player.currentHand.push(cards[handIndex]);
     cards.splice(handIndex,1);
-    const playerpara = document.createElement('p');
-    const playernode = document.createTextNode((i+1) + ": " + player.currentHand[i].name + ": " + player.currentHand[i].damage);
-    playerpara.appendChild(playernode);
-    const playerelement = document.getElementById('playercard');
-    playerelement.appendChild(playerpara);
-  }  
+    const playerPara = document.createElement('p');
+    playerPara.id = "p" + i;
+    if (roundCounter == 0) {
+      const playerNode = document.createTextNode((i+1) + ": " + player.currentHand[i].name + ": " + player.currentHand[i].damage);
+      playerPara.appendChild(playerNode);
+      const playerElement = document.getElementById('playercard');
+      playerElement.appendChild(playerPara);
+    } else if (roundCounter == 2) {
+      const playerNode = document.createTextNode((i+3) + ": " + player.currentHand[i+2].name + ": " + player.currentHand[i+2].damage);
+      playerPara.appendChild(playerNode);
+      const playerElement = document.getElementById('playercard');
+      playerElement.appendChild(playerPara);
+    } else console.log("Error");
+  }
   for (let i = 0; i < 3; i++) {  
     const min = Math.ceil(0);
     const max = Math.floor(cards.length - 1);
     let handIndex = Math.floor(Math.random() * (max - min + 1) + min);
     computer.currentHand.push(cards[handIndex]);
     cards.splice(handIndex,1);
-    const computerpara = document.createElement('p');
-    const computernode = document.createTextNode((i+1) + ": " + computer.currentHand[i].name + ": " + computer.currentHand[i].damage);
-    computerpara.appendChild(computernode);
-    const computerelement = document.getElementById('computercard');
-    computerelement.appendChild(computerpara);
+    const computerPara = document.createElement('p');
+    computerPara.id = "c" + i;
+    if (roundCounter == 0) {
+      const computerNode = document.createTextNode((i+1) + ": " + computer.currentHand[i].name + ": " + computer.currentHand[i].damage);
+      computerPara.appendChild(computerNode);
+      const computerElement = document.getElementById('computercard');
+      computerElement.appendChild(computerPara);
+    } else if (roundCounter == 2) {
+      const computerNode = document.createTextNode((i+3) + ": " + computer.currentHand[i+2].name + ": " + computer.currentHand[i+2].damage);
+      computerPara.appendChild(computerNode);
+      const computerElement = document.getElementById('computercard');
+      computerElement.appendChild(computerPara);
+    } else console.log("Error");
   }
+
   console.log(player.currentHand);
   console.log(computer.currentHand);
   roundCounter++;
@@ -288,8 +319,6 @@ const element = document.getElementById("div1");
 element.appendChild(para);
 </script> */
 
-let selectedNumber = document.querySelector(".quantity");
-// console.log(selectedNumber);
 let roundCounter = 0;
 
 const round = (num) => {
@@ -332,21 +361,3 @@ dealButton.addEventListener("click", () => dealHand());
 dealButton.addEventListener("click", function(){
   document.getElementById("roundcounter").innerHTML = "Round: " + roundCounter;
 });
-
-// const playButton = document.getElementById("playhand");
-// playButton.addEventListener("click")
-
-// round(1);
-// round(2);
-// round(4);
-// round(3);
-// console.log("The player's score is " + player.score)
-// console.log("The computer's score is " + computer.score)
-// console.log("Round " + roundCounter + " complete!")
-
-//look up how to do carousels
-
-const onSubmit = (quantity) => {
-  console.log('Submitted')
-  console.log(quantity);
-}
