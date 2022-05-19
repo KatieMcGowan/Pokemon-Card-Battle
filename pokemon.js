@@ -230,19 +230,23 @@ const player = {
     //Removes played Pokemon from playercard by calling upon HTML ID, storing in a variable, and removing it
     let playedEntry = document.getElementById("p" + index)
     //**********HAVE TO MAKE THIS DYNAMIC**************/
+    //I played 1, which would equal index = 0;
     playedEntry.remove()
     //Changes the p id's and updates the numbers next to Pokemon
     const playerContainer = document.querySelector('#playercard')
     let pArray = playerContainer.querySelectorAll('p');
     for (let i = 0; i < pArray.length; i++) {
-      for (let element of pArray) {
-        element.id = "p" + element;
-      } 
+      pArray[i].id = "p" + i;
       pArray[i].innerHTML = (i + 1) + ": " + this.currentHand[i].name + ": " + this.currentHand[i].damage;
     }
+    console.log(pArray);
     //Updates number field to reflect player hand's length
     document.getElementById('quantity').max = player.currentHand.length;
     console.log(document.getElementById('quantity').max = player.currentHand.length);
+    if (this.currentHand == 0) {
+      dealButton.style.visibility = 'visible';
+      document.getElementById('quantity').style.visibility = 'hidden';
+    }
   }
 }  
 
@@ -286,9 +290,7 @@ const computer = {
     const computerContainer = document.querySelector('#computercard')
     const cArray = computerContainer.querySelectorAll('p');
     for (let i = 0; i < cArray.length; i++) {
-      for (let element of cArray) {
-        element.id = "c" + element;
-      }
+      cArray[i].id = "c" + i;
       cArray[i].innerHTML = (i + 1) + ": " + this.currentHand[i].name + ": " + this.currentHand[i].damage;
     }
   }    
@@ -308,6 +310,7 @@ const dealHand = () => {
     //Creates new p-tag HTML element and gives it an ID concatenated with i value to make every HTML element unique
     const playerPara = document.createElement('p');
     playerPara.id = "p" + i;
+    //**********************FIX THESE CONDITIONALS***************/
     //At the top of the round, creates text node and populates with random cards
     if (roundCounter == 0) {
       const playerNode = document.createTextNode((i+1) + ": " + player.currentHand[i].name + ": " + player.currentHand[i].damage);
