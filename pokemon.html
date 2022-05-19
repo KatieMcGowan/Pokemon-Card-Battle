@@ -21,11 +21,7 @@
       <p id="playerscore">Score: 0</p>
     </div>
     <div id="playerplayed"></div>
-    <div id="computerplayed">
-      <!-- <div id="computer-card-one"></div>
-      <div id="computer-card-two"></div>
-      <div id="computer-card-three"></div> -->
-    </div>
+    <div id="computerplayed"></div>
     <div class="computerside">
       <div id="computercard"></div>
       <p id="computer">Computer</p>
@@ -34,22 +30,12 @@
   </div>
   <button id="deal">Deal Hand</button>
   <br>
-
-<!-- <form onsubmit="round((document.getElementById('quantity'))">
-  <label for="quantity">Choose the number correlated with Pokemon name you want to play:</label>
-  <input type="number" name="quantity" id="quantity" min="1" max="3">
-  <span class="validity"></span>
-  <input type="submit" value="Submit">
-</form> -->
-  
-  
-  <label for="quantity">Choose the number correlated with Pokemon name you want to play:</label>
-  <input type="number" name="quantity" id="quantity" min="1" max="3">
-  <span id="validity"></span>
-  <button id='playhand' onclick="round(document.getElementById('quantity').value)">Submit</button>
-  <!-- <input type="submit" value="Submit"> -->
-
-
+  <div id="selectnumber">
+    <p id="label">Choose the number correlated with Pokemon name you want to play:</p>
+    <input type="number" name="quantity" id="quantity" min="1" max="3">
+    <span id="validity"></span>
+    <button id='playhand' onclick="round(document.getElementById('quantity').value)">Submit</button>
+  </div>
   <script src="pokemon.js"></script>
 </body>
 </html>

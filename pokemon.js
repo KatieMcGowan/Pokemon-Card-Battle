@@ -197,6 +197,7 @@ const cards = [
 document.getElementById('quantity').style.visibility = 'hidden';
 document.getElementById('playhand').style.visibility = 'hidden';
 document.getElementById('validity').style.visibility = 'hidden';
+document.getElementById('label').style.visibility = 'hidden';
 //Array for comparing played cards
 const playedCards = [];
 
@@ -204,7 +205,6 @@ const playedCards = [];
 const player = {
   score: 0,
   currentHand: [],
-  previouslyPlayed: [],
   //Play card method, takes num as an argument (grabbed from number input on page)
   playCard (num) {
     console.log("Player's turn");
@@ -213,7 +213,6 @@ const player = {
     let playedCard = this.currentHand[index];
     playedCards.push(playedCard);
     console.log(playedCard);
-    this.previouslyPlayed.push(playedCard);
     this.currentHand.splice(index,1)
     console.log(this.currentHand)
     //Updates played card field
@@ -246,6 +245,8 @@ const player = {
     if (this.currentHand == 0) {
       dealButton.style.visibility = 'visible';
       document.getElementById('quantity').style.visibility = 'hidden';
+      document.getElementById('validity').style.visibility = 'hidden';
+      document.getElementById('playhand').style.visibility = 'hidden';
     }
   }
 }  
@@ -254,7 +255,6 @@ const player = {
 const computer = {
   score: 0,
   currentHand: [],
-  previouslyPlayed: [],
   computerSelection: 0,
   //Computer-specific method that randomly selects an index from currentHand array; returns a value to be plugged into playCard method in round function
   autoSelect() {
@@ -269,7 +269,6 @@ const computer = {
     playedCards.push(playedCard);
     console.log(playedCard);
     this.computerSelection = 0;
-    this.previouslyPlayed.push(playedCard);
     this.currentHand.splice(index,1)
     console.log(this.currentHand)
     //Updates played card field
@@ -286,7 +285,7 @@ const computer = {
     //Removes played Pokemon from computercard by calling upon HTML ID, storing in a variable, and removing it
     let playedEntry = document.getElementById("c" + index)
     playedEntry.remove()
-    // Manipulating computerside hand
+    // Manipulates computerside hand
     const computerContainer = document.querySelector('#computercard')
     const cArray = computerContainer.querySelectorAll('p');
     for (let i = 0; i < cArray.length; i++) {
@@ -295,7 +294,6 @@ const computer = {
     }
   }    
 }
-
 
 const dealHand = () => {
   //For loop that runs three times to deal out three cards to player, utilizes math.Random to ensure random dealing
@@ -310,7 +308,6 @@ const dealHand = () => {
     //Creates new p-tag HTML element and gives it an ID concatenated with i value to make every HTML element unique
     const playerPara = document.createElement('p');
     playerPara.id = "p" + i;
-    //**********************FIX THESE CONDITIONALS***************/
     //At the top of the round, creates text node and populates with random cards
     if (roundCounter == 0) {
       const playerNode = document.createTextNode((i+1) + ": " + player.currentHand[i].name + ": " + player.currentHand[i].damage);
@@ -318,13 +315,20 @@ const dealHand = () => {
       //Apphends card info to playercard HTML element
       const playerElement = document.getElementById('playercard');
       playerElement.appendChild(playerPara);
-    } else if (roundCounter == 2) {
-      const playerNode = document.createTextNode((i+3) + ": " + player.currentHand[i+2].name + ": " + player.currentHand[i+2].damage);
+    } else if (roundCounter == 4) {
+      const playerNode = document.createTextNode((i+1) + ": " + player.currentHand[i].name + ": " + player.currentHand[i].damage);
       playerPara.appendChild(playerNode);
       const playerElement = document.getElementById('playercard');
       playerElement.appendChild(playerPara);
-    } else console.log("Error");
-  }
+    } else if (roundCounter == 7) {
+      const playerNode = document.createTextNode((i+1) + ": " + player.currentHand[i].name + ": " + player.currentHand[i].damage);
+      playerPara.appendChild(playerNode);
+      const playerElement = document.getElementById('playercard');
+      playerElement.appendChild(playerPara);
+    } else {
+      console.log("huh");
+    };
+  };  
   //For loop that runs three times to deal out three cards to computer, utilizes math.Random to ensure random dealing
   for (let i = 0; i < 3; i++) {  
     const min = Math.ceil(0);
@@ -343,25 +347,59 @@ const dealHand = () => {
       computerPara.appendChild(computerNode);
       const computerElement = document.getElementById('computercard');
       computerElement.appendChild(computerPara);
-    } else if (roundCounter == 2) {
-      const computerNode = document.createTextNode((i+3) + ": " + computer.currentHand[i+2].name + ": " + computer.currentHand[i+2].damage);
+    } else if (roundCounter == 4) {
+      const computerNode = document.createTextNode((i+1) + ": " + computer.currentHand[i].name + ": " + computer.currentHand[i].damage);
       computerPara.appendChild(computerNode);
       const computerElement = document.getElementById('computercard');
       computerElement.appendChild(computerPara);
-    } else console.log("Error");
-  }
+      document.getElementById('quantity').max = player.currentHand.length;
+    } else if (roundCounter == 7) {
+      const computerNode = document.createTextNode((i+1) + ": " + computer.currentHand[i].name + ": " + computer.currentHand[i].damage);
+      computerPara.appendChild(computerNode);
+      const computerElement = document.getElementById('computercard');
+      computerElement.appendChild(computerPara);
+      document.getElementById('quantity').max = player.currentHand.length;
+    } else {
+      console.log("huh");
+    }
+  };
   console.log(player.currentHand);
   console.log(computer.currentHand);
   if (roundCounter == 0) {
-  roundCounter++;
+    roundCounter++;
   };
   document.getElementById('deal').style.visibility = 'hidden';
-}
+  document.getElementById('label').style.visibility = 'visible';
+};
 
 let roundCounter = 0;
 
 const round = (num) => {
   if (cards.length > 0) {
+    console.log("Player's hand:");
+    console.log(player.currentHand);
+    console.log("Computer's hand:");
+    console.log(computer.currentHand);
+    console.log("Cards remaining:");
+    console.log(cards);
+    player.playCard(num);
+    computer.autoSelect();
+    computer.playCard(computer.computerSelection);
+    if (playedCards[0].damage > playedCards[1].damage) {
+      player.score++
+      document.getElementById("playerscore").innerHTML = "Score: " + player.score;
+      console.log("Player wins the round");
+    } else if (playedCards[0].damage < playedCards[1].damage) {
+      computer.score++
+      document.getElementById("computerscore").innerHTML = "Score: " + computer.score;
+      console.log("Computer wins the round");
+    } else {
+      console.log("Tie!")
+    }
+    playedCards.splice(0,2); 
+  } else if (cards.length > 0 && player.currentHand.length == 0) {
+      document.getElementById('deal').style.visibility = 'visibile';
+  } else if (cards.length == 0 && player.currentHand.length > 0) {
     console.log("Player's hand:");
     console.log(player.currentHand);
     console.log("Computer's hand:");
@@ -384,41 +422,46 @@ const round = (num) => {
       console.log("Tie!")
     }
     playedCards.splice(0,2); 
-  } else {
-    console.log("Game over!")
-    if (player.score > computer.score) {
-      console.log("Player wins!")
-    } else {
-      console.log("Computer wins!");
-    }
-  }
+  //Never hitting this condition because function isn't being called. 
+  } 
   roundCounter++;
   console.log("Round: " + roundCounter)
-  document.getElementById("roundcounter").innerHTML = "Round: " + roundCounter;
-  if (player.currentHand.length == 0) {
-    document.getElementById('deal').style.visibility = 'visibile';
+  document.getElementById("roundcounter").innerHTML = "Round: " + roundCounter; 
+  console.log(player.currentHand);
+  if (cards.length == 0 && player.currentHand.length == 0) {
+    console.log("Game over!");
+    dealButton.remove();
+    quantity.remove()
+    playHandButton.remove();
+    validity.remove();
+    if (player.score > computer.score) {
+      console.log("Player wins!")
+      choosePokemonLabel.textContent = 'Game Over. Player wins. Refresh to play again.';
+    } else if (player.score == computer.score) {
+      console.log("Tie!");
+      choosePokemonLabel.textContent = 'Game Over. It is a tie. Refresh to play again.';
+    } else {
+      console.log("Computer wins!")
+      choosePokemonLabel.textContent = 'Game Over. Computer wins. Refresh to play again.';
+    }
   }
 };
 
 const dealButton = document.getElementById("deal");
+const roundCounterHtml = document.getElementById('roundcounter')
+const playHandButton = document.getElementById('playhand');
+const quantity = document.getElementById('quantity');
+const validity = document.getElementById('validity'); 
+const choosePokemonLabel = document.getElementById('label');
+
 dealButton.addEventListener("click", () => dealHand());
 dealButton.addEventListener("click", function(){
-  document.getElementById("roundcounter").innerHTML = "Round: " + roundCounter;
-  document.getElementById('quantity').style.visibility = 'visible';
-  document.getElementById('playhand').style.visibility = 'visible';
-  document.getElementById('validity').style.visibility = 'visible';
+  roundCounterHtml.innerHTML = "Round: " + roundCounter;
+  quantity.style.visibility = 'visible';
+  playHandButton.style.visibility = 'visible';
+  validity.style.visibility = 'visible';
 });
 
 // document.getElementById("cp" + roundCounter).style.textDecoration = "line-through";
 
-//List of issues: 
-//HTML for Pokemon in the playercard and computercard (numbers), are not responsive. 
-//if (p + number) != num (selected by user) 
-//for loop to change p to 0,1, etc. 
-//change id to array index + 1
-
-
-//Refactoring: 
-//Take out the number system, make new textNodes be clickable and correlated with the indexes of playerHand/conputerHand
-//Created p-id's for playerhand = p0, p1, p2
-//p onclick execute round(num);
+//round 7+, game breaks

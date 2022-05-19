@@ -47,20 +47,8 @@ h2 {
   border: 5px;
   border-style: dashed;
   border-color: navy;
-}
-#playerdiscard {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  padding: 5px;
-  font-size: 10px;
-  height: 200px;
-  width: 150px;
-  text-decoration: line-through;
-  border: 5px;
-  border-style: dashed;
-  border-color: navy;
+  color: red;
+  overflow-y: auto;
 }
 #computerplayed {
   display: flex;
@@ -74,20 +62,8 @@ h2 {
   border: 5px;
   border-style: dashed;
   border-color: navy;
-}
-#computerdiscard {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  padding: 5px;
-  font-size: 10px;
-  height: 200px;
-  width: 150px;
-  text-decoration: line-through;
-  border: 5px;
-  border-style: dashed;
-  border-color: navy;
+  color: red;
+  overflow-y: auto;
 }
 #computercard {
   display: flex;
@@ -104,14 +80,33 @@ h2 {
   border-style: solid;
   border-color: navy;
 }
-#dealtHand {
-  font-size: 18px;
+#deal {
+  display: block; 
+  margin: auto;
+  font-family: 'Press Start 2P', cursive;
+  text-align: center;
   background-color: blue;
-  height: 200px;
-  width: 150px;
+  color: yellow;
   border: 5px;
   border-style: solid;
   border-color: navy;
+  border-radius: 15px;
+}
+#selectnumber {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+#playhand {
+  font-family: 'Press Start 2P', cursive;
+  text-align: center;
+  background-color: blue;
+  color: yellow;
+  border: 5px;
+  border-style: solid;
+  border-color: navy;
+  border-radius: 25px;
 }
 input:invalid+span:after {
   content: '✖';
