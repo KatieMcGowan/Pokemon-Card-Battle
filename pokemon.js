@@ -194,10 +194,20 @@ const cards = [
   }
 ]
 
-document.getElementById('quantity').style.visibility = 'hidden';
-document.getElementById('playhand').style.visibility = 'hidden';
-document.getElementById('validity').style.visibility = 'hidden';
-document.getElementById('label').style.visibility = 'hidden';
+//Stores HTML elements in JS variables to be called upon later
+const dealButton = document.getElementById("deal");
+const roundCounterHtml = document.getElementById('roundcounter')
+const playHandButton = document.getElementById('playhand');
+const quantity = document.getElementById('quantity');
+const validity = document.getElementById('validity'); 
+const choosePokemonLabel = document.getElementById('label');
+
+//Starting state of HTML elements;
+quantity.style.visibility = 'hidden';
+playHandButton.style.visibility = 'hidden';
+validity.style.visibility = 'hidden';
+choosePokemonLabel.style.visibility = 'hidden';
+
 //Array for comparing played cards
 const playedCards = [];
 
@@ -207,14 +217,11 @@ const player = {
   currentHand: [],
   //Play card method, takes num as an argument (grabbed from number input on page)
   playCard (num) {
-    console.log("Player's turn");
     //Declares index variable because number submitted on page is 1-3, whereas the arrays being modified start at index 0
     let index = num - 1; 
     let playedCard = this.currentHand[index];
     playedCards.push(playedCard);
-    console.log(playedCard);
     this.currentHand.splice(index,1)
-    console.log(this.currentHand)
     //Updates played card field
     //Creates new HTML p-tag element
     const playerPlayedPara = document.createElement('p');
@@ -228,25 +235,23 @@ const player = {
     playerElement.appendChild(playerPlayedPara);
     //Removes played Pokemon from playercard by calling upon HTML ID, storing in a variable, and removing it
     let playedEntry = document.getElementById("p" + index)
-    //**********HAVE TO MAKE THIS DYNAMIC**************/
-    //I played 1, which would equal index = 0;
     playedEntry.remove()
-    //Changes the p id's and updates the numbers next to Pokemon
+    //Changes the p-tag ID's and updates the numbers next to Pokemon
     const playerContainer = document.querySelector('#playercard')
     let pArray = playerContainer.querySelectorAll('p');
     for (let i = 0; i < pArray.length; i++) {
       pArray[i].id = "p" + i;
       pArray[i].innerHTML = (i + 1) + ": " + this.currentHand[i].name + ": " + this.currentHand[i].damage;
     }
-    console.log(pArray);
     //Updates number field to reflect player hand's length
-    document.getElementById('quantity').max = player.currentHand.length;
-    console.log(document.getElementById('quantity').max = player.currentHand.length);
+    quantity.max = player.currentHand.length;
+    //Adjusts HTML elements visibility when player's hand is 0
     if (this.currentHand == 0) {
       dealButton.style.visibility = 'visible';
-      document.getElementById('quantity').style.visibility = 'hidden';
-      document.getElementById('validity').style.visibility = 'hidden';
-      document.getElementById('playhand').style.visibility = 'hidden';
+      quantity.style.visibility = 'hidden';
+      validity.style.visibility = 'hidden';
+      playHandButton.style.visibility = 'hidden';
+      choosePokemonLabel.style.visibility = 'hidden'
     }
   }
 }  
@@ -263,14 +268,11 @@ const computer = {
     this.computerSelection += Math.floor(Math.random() * (max - min + 1) + min);
   },
   playCard (num) {
-    console.log("Computer's turn");
     let index = num; 
     let playedCard = this.currentHand[index];
     playedCards.push(playedCard);
-    console.log(playedCard);
     this.computerSelection = 0;
     this.currentHand.splice(index,1)
-    console.log(this.currentHand)
     //Updates played card field
     //Creates new HTML p-tag element
     const computerPlayedPara = document.createElement('p');
@@ -285,7 +287,7 @@ const computer = {
     //Removes played Pokemon from computercard by calling upon HTML ID, storing in a variable, and removing it
     let playedEntry = document.getElementById("c" + index)
     playedEntry.remove()
-    // Manipulates computerside hand
+    //Changes the p-tag ID's and updates the numbers next to Pokemon
     const computerContainer = document.querySelector('#computercard')
     const cArray = computerContainer.querySelectorAll('p');
     for (let i = 0; i < cArray.length; i++) {
@@ -352,36 +354,28 @@ const dealHand = () => {
       computerPara.appendChild(computerNode);
       const computerElement = document.getElementById('computercard');
       computerElement.appendChild(computerPara);
-      document.getElementById('quantity').max = player.currentHand.length;
+      quantity.max = player.currentHand.length;
     } else if (roundCounter == 7) {
       const computerNode = document.createTextNode((i+1) + ": " + computer.currentHand[i].name + ": " + computer.currentHand[i].damage);
       computerPara.appendChild(computerNode);
       const computerElement = document.getElementById('computercard');
       computerElement.appendChild(computerPara);
-      document.getElementById('quantity').max = player.currentHand.length;
+      quantity.max = player.currentHand.length;
     } else {
-      console.log("huh");
+      console.log("Done!")
     }
   };
-  console.log(player.currentHand);
-  console.log(computer.currentHand);
   if (roundCounter == 0) {
     roundCounter++;
   };
-  document.getElementById('deal').style.visibility = 'hidden';
-  document.getElementById('label').style.visibility = 'visible';
+  dealButton.style.visibility = 'hidden';
+  choosePokemonLabel.style.visibility = 'visible';
 };
 
 let roundCounter = 0;
 
 const round = (num) => {
   if (cards.length > 0) {
-    console.log("Player's hand:");
-    console.log(player.currentHand);
-    console.log("Computer's hand:");
-    console.log(computer.currentHand);
-    console.log("Cards remaining:");
-    console.log(cards);
     player.playCard(num);
     computer.autoSelect();
     computer.playCard(computer.computerSelection);
@@ -400,16 +394,9 @@ const round = (num) => {
   } else if (cards.length > 0 && player.currentHand.length == 0) {
       document.getElementById('deal').style.visibility = 'visibile';
   } else if (cards.length == 0 && player.currentHand.length > 0) {
-    console.log("Player's hand:");
-    console.log(player.currentHand);
-    console.log("Computer's hand:");
-    console.log(computer.currentHand);
-    console.log("Cards remaining:");
-    console.log(cards);
     player.playCard(num);
     computer.autoSelect();
     computer.playCard(computer.computerSelection);
-    console.log(playedCards);
     if (playedCards[0].damage > playedCards[1].damage) {
       player.score++
       document.getElementById("playerscore").innerHTML = "Score: " + player.score;
@@ -422,37 +409,24 @@ const round = (num) => {
       console.log("Tie!")
     }
     playedCards.splice(0,2); 
-  //Never hitting this condition because function isn't being called. 
   } 
   roundCounter++;
-  console.log("Round: " + roundCounter)
   document.getElementById("roundcounter").innerHTML = "Round: " + roundCounter; 
-  console.log(player.currentHand);
   if (cards.length == 0 && player.currentHand.length == 0) {
-    console.log("Game over!");
     dealButton.remove();
     quantity.remove()
     playHandButton.remove();
     validity.remove();
+    choosePokemonLabel.style.visibility = 'visible';
     if (player.score > computer.score) {
-      console.log("Player wins!")
-      choosePokemonLabel.textContent = 'Game Over. Player wins. Refresh to play again.';
+      choosePokemonLabel.innerHTML = 'Game Over. Player wins. Refresh to play again.';
     } else if (player.score == computer.score) {
-      console.log("Tie!");
-      choosePokemonLabel.textContent = 'Game Over. It is a tie. Refresh to play again.';
+      choosePokemonLabel.innerHTML = 'Game Over. It is a tie. Refresh to play again.';
     } else {
-      console.log("Computer wins!")
-      choosePokemonLabel.textContent = 'Game Over. Computer wins. Refresh to play again.';
+      choosePokemonLabel.innerHTML = 'Game Over. Computer wins. Refresh to play again.';
     }
   }
 };
-
-const dealButton = document.getElementById("deal");
-const roundCounterHtml = document.getElementById('roundcounter')
-const playHandButton = document.getElementById('playhand');
-const quantity = document.getElementById('quantity');
-const validity = document.getElementById('validity'); 
-const choosePokemonLabel = document.getElementById('label');
 
 dealButton.addEventListener("click", () => dealHand());
 dealButton.addEventListener("click", function(){
@@ -461,7 +435,3 @@ dealButton.addEventListener("click", function(){
   playHandButton.style.visibility = 'visible';
   validity.style.visibility = 'visible';
 });
-
-// document.getElementById("cp" + roundCounter).style.textDecoration = "line-through";
-
-//round 7+, game breaks
